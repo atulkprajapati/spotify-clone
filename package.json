@@ -20,5 +20,8 @@
   },
   "overrides": {
     "esbuild": "npm:esbuild-wasm@latest"
+  },
+  "dependencies": {
+    "@tailwindcss/line-clamp": "^0.4.2"
   }
 }
