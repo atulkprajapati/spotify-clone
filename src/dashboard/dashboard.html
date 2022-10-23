@@ -11,8 +11,8 @@
 <body class="h-screen bg-black text-primary">
     <main class="h-full grid-template-areas grid grid-cols-[250px_1fr] grid-rows-[1fr_auto]">
         <aside class="sidenav">Sidenav</aside>
-        <section class="content">
-            <header class="border-2 border-solid px-8 py-4">
+        <article class="content relative overflow-auto bg-transparent">
+            <header class="header bg-transparent px-8 py-4">
                 <nav class="flex justify-end relative">
                     <button id="user-profile-btn" class="flex items-center gap-x-2 rounded-2xl p-1 px-2 hover:bg-light-black">
                         <section><svg id="default-image" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 rounded-full bg-gray">
@@ -29,11 +29,11 @@
                     </ul>
                 </nav>
             </header>
-            <article class="p-4">
-                <h1 class="text-2xl ">Featured</h1>
-                <section id="feature-playlist-items" class="featured-songs grid grid-cols-auto-fill-cards gap-4"></section>
+            <article id="cover-content" class="grid absolute top-0 -z-[1] w-full h-72 content-center px-4 bg-gradient-to-b from-light-black to-black-base">
+                <h1 class="text-6xl">Hello Atul</h1>
             </article>
-        </section>
+            <section id="page-content" class="bg-black-base mt-48"></section>
+        </article>
         <footer class="now-playing">Now Playing</footer>
     </main>
 </body>
