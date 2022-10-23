@@ -15,7 +15,6 @@ const loadUserProfile = async() => {
     const profileButton = document.querySelector("#user-profile-btn");
     const displayNameElement = document.querySelector("#display-name");
 
-    const userInfo = await fetchRequest(ENDPOINT.userInfo);
     const { display_name: displayName, images } = await fetchRequest(ENDPOINT.userInfo);
     if (images?.length) {
         defaultImage.classList.add("hidden")
@@ -26,8 +25,30 @@ const loadUserProfile = async() => {
     displayNameElement.textContent = displayName;
 }
 
+const onPlaylistItemClicked = (event) => {
+    console.log(event.target);
+}
+
+const loadFeaturedPlaylists = async() => {
+    const { playlists: {items}} = await fetchRequest(ENDPOINT.featuredPlaylists);
+    const playlistItemsSection = document.querySelector("#feature-playlist-items");
+    for (let {name, description, images, id} of items){
+        const playlistItem = document.createElement("section");
+        playlistItem.className = "rounded border-2 border-solid p-4 hover:cursor-pointer";
+        playlistItem.id = id;
+        playlistItem.setAttribute("data-type", "playlist")
+        playlistItem.addEventListener("click", onPlaylistItemClicked)
+        const [{url: imageUrl}] = images;
+        playlistItem.innerHTML = `<img src=${imageUrl} alt=${name} class="rounded mb-2 object-contain shadow">
+            <h2 class="text-sm">${name}</h2>
+            <h3 class="text-xs">${description}</h3>`
+        playlistItemsSection.appendChild(playlistItem)
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     loadUserProfile();
+    loadFeaturedPlaylists();
     document.addEventListener("click", () => {
         const profileMenu = document.getElementById("profile-menu")
         if (!profileMenu.classList.contains("hidden")) {
