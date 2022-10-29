@@ -62,7 +62,7 @@ const loadPlaylists = () => {
 
 const fillContentInDashboard = () => {
     const coverContent = document.querySelector("#cover-content");
-    coverContent.innerHTML = `<h1 class="text-6xl">Hello ${displayName}</h1>`
+    coverContent.innerHTML = `<h1 class="text-6xl mt-20">Hello ${displayName} <p class="w-full gap-4 text-xl text-secondary">Welcome to Spotify</p></h1>`
     const pageContent = document.querySelector("#page-content");
     const playlistMap = new Map([["featured","feature-playlist-items"],["top new charts", "top-playlist-items"]])
     let innerHTML = "";
@@ -268,6 +268,25 @@ const loadSection = (section) => {
     document.querySelector(".content").addEventListener("scroll", onContentScroll);
 }
 
+const onUserPlaylistClick = (id) => {
+    const section = {type: SECTIONTYPE.PLAYLIST, playlist: id};
+    history.pushState(section, "", `/dashboard/playlist/${id}`);
+    loadSection(section);
+}
+
+const loadUserPlaylists = async() => {
+    const playlists = await fetchRequest(ENDPOINT.userPlaylists);
+    const userPlaylistsSection = document.querySelector("#user-playlists > ul");
+    userPlaylistsSection.innerHTML = "";
+    for(let {name, id} of playlists.items) {
+        const li = document.createElement("li");
+        li.textContent = name;
+        li.className = "cursor-pointer hover:text-primary"
+        li.addEventListener("click", () => onUserPlaylistClick(id));
+        userPlaylistsSection.appendChild(li)
+    }
+}
+
 document.addEventListener("DOMContentLoaded", async() => {
     const volume = document.querySelector("#volume")
     const playPrev = document.querySelector("#prev")
@@ -279,6 +298,7 @@ document.addEventListener("DOMContentLoaded", async() => {
     const audioControl = document.querySelector("#audio-control")
     let progressInterval;
     ({ displayName } = await loadUserProfile());
+    loadUserPlaylists();
     // const section = { type: SECTIONTYPE.PLAYLIST, playlist: "37i9dQZF1DXb5Hc9BmAT8t"}
     const section = { type: SECTIONTYPE.DASHBOARD };
     history.pushState(section, "", "");
